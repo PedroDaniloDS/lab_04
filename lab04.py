@@ -2,7 +2,10 @@ import torch
 import torch.nn as nn
 from datasets import load_dataset
 from transformers import AutoTokenizer
-from lab04 import Transformer # considerando que a arquitetura do lab04 seja uma unica class 
+
+# Importando a arquitetura do seu arquivo lab04.py
+# (Garante a modularização pedida no documento)
+from lab04 import SeuTransformer 
 
 #### tarefas 1 e 2: dataset(hugging) e tokenizar
 
@@ -25,6 +28,7 @@ dados_processados = preprocessamento_de_dados(dataset)
 
 #### tarefa 3: training loop
 
+# Instanciando o modelo importado do lab04
 modelo = SeuTransformer(d_model=128, vocab_size=tokenizer.vocab_size)
 
 otimizador = torch.optim.Adam(modelo.parameters(), lr=0.001) 
@@ -68,8 +72,8 @@ for epoca in range(epocas):
     print(f"epoca: {epoca+1} | loss: {media_loss:.4f}") 
 
 
-#### Tarefa 4: Overfitting Test
-print("\n teste de overfitting")
+#### Tarefa 4: A Prova de Fogo (Overfitting Test)
+print("\nIniciando teste de overfitting na frase 0...")
 modelo.eval() 
 
 frase_treino_src = dados_processados["src_ids"][0:1]
@@ -100,5 +104,5 @@ with torch.no_grad():
 frase_original = tokenizer.decode(frase_treino_trg[0], skip_special_tokens=True)
 frase_gerada = tokenizer.decode(tokens_gerados, skip_special_tokens=True)
 
-print(f"esperado: {frase_original}")
-print(f"gerado:   {frase_gerada}")
+print(f"Esperado: {frase_original}")
+print(f"Gerado:   {frase_gerada}")
